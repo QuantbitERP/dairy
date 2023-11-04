@@ -116,7 +116,13 @@
   "workstation",
   "operation_time",
   "accounting_section",
-  "file_path_download_csv"
+  "file_path_download_csv",
+  "standard_and_variable_deduction_section",
+  "bill_wise_ded_account",
+  "column_break_hnekh",
+  "liter_wise_ded_account",
+  "column_break_wbmp7",
+  "percentage_wise_ded_account"
  ],
  "fields": [
   {
@@ -236,7 +242,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Default Payments",
-   "options": "Daily\nWeekly\nDays"
+   "options": "Days"
   },
   {
    "depends_on": "eval:doc.default_payment_type == 'Days'",
@@ -689,12 +695,43 @@
    "fieldname": "custom_date",
    "fieldtype": "Date",
    "label": "Custom Date"
+  },
+  {
+   "fieldname": "standard_and_variable_deduction_section",
+   "fieldtype": "Section Break",
+   "label": "Standard and Variable Deduction"
+  },
+  {
+   "fieldname": "bill_wise_ded_account",
+   "fieldtype": "Link",
+   "label": "Bill Wise Ded Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "liter_wise_ded_account",
+   "fieldtype": "Link",
+   "label": "Liter Wise Ded Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "percentage_wise_ded_account",
+   "fieldtype": "Link",
+   "label": "Percentage Wise Ded Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "column_break_hnekh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_wbmp7",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-09-03 22:25:01.669488",
+ "modified": "2023-11-04 10:51:03.137614",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

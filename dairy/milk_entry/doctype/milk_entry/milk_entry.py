@@ -554,7 +554,8 @@ class MilkEntry(Document):
             'snf':self.clr_kg,
             'snf_clr_per' : self.snf,
             'clr_per' : self.clr,
-            'fat_per_' : self.fat
+            'fat_per_' : self.fat,
+            'amount' :self.unit_price_with_incentive*self.volume
         })
         doc.insert(ignore_permissions=True)
         doc.submit()

@@ -11,11 +11,6 @@ from frappe.utils import (flt, getdate, get_url, now,
                           nowtime, get_time, today, get_datetime, add_days, datetime)
 
 class DairySettings(Document):
-	# def before_save(self):
-	# 	purchase_invoice()
-	# 	custom_payment()
-	# pass
-
 	@frappe.whitelist()
 	def custom_po(self):
 		frappe.enqueue(
@@ -27,29 +22,27 @@ class DairySettings(Document):
 def custom_payment():
 	p_inv = frappe.get_doc('Dairy Settings')
 	if p_inv.custom_date:
-		if p_inv.default_payment_type == 'Daily':
+		if p_inv.default_payment_type =='Daily':
+			frappe.throw("hi")
 			print('0000000000000000000000000000000000000000000000')
 			purchase = frappe.db.sql("""select distinct(supplier) as name 
 												from `tabPurchase Receipt` 
 												where docstatus =1 and posting_date ='{0}'
-												""".format(getdate(today())), as_dict =True)
+												""".format(date.today()), as_dict =True)
 						
 			print('purchase********************************************',purchase)
 			for i in purchase:
-			# p_inv = frappe.get_doc('Dairy Settings')
-			# if p_inv.default_payment_type == 'Daily':
-				pi = frappe.new_doc("Purchase Invoice")
-				
-				
-			
+				milk_entry_li=[]
+				pi=frappe.new_doc("Purchase Invoice")			
 				me = frappe.db.sql("""select milk_entry
 												from `tabPurchase Receipt` 
 												where supplier = '{0}' and posting_date = '{1}' and docstatus = 1
-												""".format(i.name,getdate(today())), as_dict =True)
+												""".format(i.name,date.today()), as_dict =True)
 				
 				print('meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',me)
 				for m in me:
 					milk = frappe.get_doc('Milk Entry',m.milk_entry)
+					milk_entry_li.append(str(m.milk_entry))
 					print('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',m.milk_entry)
 					ware = frappe.get_doc('Warehouse',{'name':milk.dcs_id})
 					print('ware^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',ware)
@@ -63,7 +56,6 @@ def custom_payment():
 						pri =  frappe.get_doc('Purchase Receipt',pr)
 						pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':pr},["parent"])
 						if not pur_inv:
-							
 							# pi = frappe.new_doc("Purchase Invoice")
 							for itm in pri.items:
 								pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
@@ -94,34 +86,80 @@ def custom_payment():
 								)
 				# pi.taxes_and_charges="Deduction Payable"
 				# pi.
-    
-				tax_row = pi.append("taxes", {})
-				tax_row.charge_type="On Net Total"
-				tax_row.account_head="Deduction Payable - BDF"
-				tax_row.category="Total"
-				tax_row.add_deduct_tax="Deduct"
-				tax_row.description="hi"
-				tax_row.rate = 1 
+				bill_wise=0
+				per_wise=0
+				litre_wise=0
+				today=date.today()
+				doc_list=frappe.get_all("Standard Deduction",filters={"name":milk.dcs_id,"first_date":['<=',today],"last_date":['>=',today]},fields=["name"])
+				if(doc_list):
+					get_sd_child = frappe.get_all("child Stand Deduction List", filters={"parent": doc_list[0]['name']},fields=["percentage_wise","bill_wise","litre_wise","farmer_code","status"])
+					for k in get_sd_child:
+						if(k.farmer_code== milk.member and k.status==True):
+							bill_wise=k.bill_wise
+							per_wise=k.percentage_wise
+							litre_wise=k.litre_wise
+							break
+					
+				tax_row1 = {
+					"charge_type":"Actual",
+					"account_head":"Deduction Payable - BDF",
+					"category": "Total",
+					"add_deduct_tax": "Deduct",
+					"description": "Actual",
+					"custom_deduction_types": "Bill Wise",
+					"tax_amount": bill_wise
+				}
+
+				pi.append("taxes", tax_row1)
+
+				tax_row2 = {
+					"charge_type": "On Item Quantity",
+					"account_head": "Deduction Payable - BDF",
+					"category": "Total",
+					"add_deduct_tax": "Deduct",
+					"description": "On Item Quantity",
+					"custom_deduction_types": "Litre Wise",
+					"rate": per_wise
+				}
+
+				pi.append("taxes", tax_row2)
+
+				tax_row3 = {
+					"charge_type": "On Net Total",
+					"account_head": "Deduction Payable - BDF",
+					"category": "Total",
+					"add_deduct_tax": "Deduct",
+					"description": "On Net Total",
+					"custom_deduction_types": "Percentage Wise",
+					"rate": litre_wise
+				}
+			
 	
+				pi.append("taxes", tax_row3)
+				pi.allocate_advances_automatically=True
 				pi.save(ignore_permissions = True)
 				pi.submit()
-				if (pi.docstatus == 1):
-					milk.db_set('status','Billed')
+				# if (pi.docstatus == 1):
+				# 	if(len(milk_entry_li)>=1):
+				# 		for i in milk_entry_li:
+				# 			milk =frappe.get_doc('Milk Entry',str(i))
+				# 			milk.db_set('status','Billed')
+				frappe.db.commit()
+			# p_inv.previous_sync_date=getdate(n_days_ago)
+			# p_inv.save()
 
 
 
 		if p_inv.default_payment_type == 'Days':
-
-			
 			n_days_ago = (datetime.datetime.strptime(p_inv.previous_sync_date,'%Y-%m-%d')) + timedelta(days= p_inv.days-1)
 			
 			purchase = frappe.db.sql("""select distinct(supplier) as name 
 											from `tabPurchase Receipt` 
 											where docstatus =1 and posting_date BETWEEN '{0}' and '{1}'
 											""".format(p_inv.previous_sync_date,getdate(n_days_ago)), as_dict =True)
-					
+			
 			for i in purchase:
-				
+				milk_entry_li=[]
 				me = frappe.db.sql("""select milk_entry , status , supplier
 											from `tabPurchase Receipt` 
 											where docstatus= 1 and supplier = '{0}' and posting_date BETWEEN '{1}' and '{2}' and per_billed<100 and milk_entry is not null
@@ -131,12 +169,12 @@ def custom_payment():
 					print('meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',me)
 					for m in me:
 						if m.milk_entry:
-							milk = frappe.get_doc('Milk Entry',m.milk_entry)
-							ware = frappe.get_doc('Warehouse',{'name':milk.dcs_id})
-
-							pr =  frappe.db.get_value('Purchase Receipt',{'milk_entry':milk.name,"docstatus":1},['name'])
+							milk =frappe.get_doc('Milk Entry',m.milk_entry)
+							milk_entry_li.append(str(m.milk_entry))
+							ware =frappe.get_doc('Warehouse',{'name':milk.dcs_id})
+							pr =frappe.db.get_value('Purchase Receipt',{'milk_entry':milk.name,"docstatus":1},['name'])
 							if pr:
-								pri =  frappe.get_doc('Purchase Receipt',pr)
+								pri=frappe.get_doc('Purchase Receipt',pr)
 
 							# if pr:
 								# pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':pr},["parent"])
@@ -176,58 +214,70 @@ def custom_payment():
 										}
 									)
 					
-
+					bill_wise=0
+					per_wise=0
+					litre_wise=0
+					today=date.today()
+					doc_list=frappe.get_all("Standard Deduction",filters={"name":milk.dcs_id,"first_date":['<=',today],"last_date":['>=',today]},fields=["name"])
+					if(doc_list):
+						get_sd_child = frappe.get_all("child Stand Deduction List", filters={"parent": doc_list[0]['name']},fields=["percentage_wise","bill_wise","litre_wise","farmer_code","status"])
+						for k in get_sd_child:
+							if(k.farmer_code== milk.member and k.status==True):
+								bill_wise=k.bill_wise
+								per_wise=k.percentage_wise
+								litre_wise=k.litre_wise
+								break
+					get_dairy_setting=frappe.get_doc("Dairy Settings")
 					tax_row1 = {
 						"charge_type":"Actual",
-						"account_head":"Deduction Payable - BDF",
+						"account_head":get_dairy_setting.bill_wise_ded_account,
 						"category": "Total",
 						"add_deduct_tax": "Deduct",
 						"description": "Actual",
 						"custom_deduction_types": "Bill Wise",
-						"rate": 2.0
+						"tax_amount": bill_wise
 					}
 
 					pi.append("taxes", tax_row1)
 
 					tax_row2 = {
 						"charge_type": "On Item Quantity",
-						"account_head": "Deduction Payable - BDF",
+						"account_head": get_dairy_setting.liter_wise_ded_account,
 						"category": "Total",
 						"add_deduct_tax": "Deduct",
 						"description": "On Item Quantity",
 						"custom_deduction_types": "Litre Wise",
-						"rate": 1.0
+						"rate":litre_wise
 					}
 
 					pi.append("taxes", tax_row2)
 
 					tax_row3 = {
 						"charge_type": "On Net Total",
-						"account_head": "Deduction Payable - BDF",
+						"account_head": get_dairy_setting.percentage_wise_ded_account,
 						"category": "Total",
 						"add_deduct_tax": "Deduct",
 						"description": "On Net Total",
 						"custom_deduction_types": "Percentage Wise",
-						"rate": 1.0
+						"rate": per_wise
 					}
-
 					pi.append("taxes", tax_row3)
-
-
-
+					pi.allocate_advances_automatically=True
 					pi.save(ignore_permissions = True)
 					pi.submit()
 					if (pi.docstatus == 1):
-						milk.db_set('status','Billed')
+						if(len(milk_entry_li)>=1):
+							for i in milk_entry_li:
+								milk =frappe.get_doc('Milk Entry',str(i))
+								milk.db_set('status','Billed')
 					frappe.db.commit()
 			p_inv.previous_sync_date=getdate(n_days_ago)
-
+			p_inv.save()
 
 
 
 		if p_inv.default_payment_type == 'Weekly':
 			delta=getdate(today()) - getdate(p_inv.previous_sync_date)
-			
 			if delta.days >= 7:
 				# d2 = getdate(date.today())
 
@@ -290,6 +340,57 @@ def custom_payment():
 										'milk_entry':milk.name
 									}
 								)
+					bill_wise=0
+					per_wise=0
+					litre_wise=0
+					today=date.today()
+					doc_list=frappe.get_all("Standard Deduction",filters={"name":milk.dcs_id,"first_date":['<=',today],"last_date":['>=',today]},fields=["name"])
+					if(doc_list):
+						get_sd_child = frappe.get_all("child Stand Deduction List", filters={"parent": doc_list[0]['name']},fields=["percentage_wise","bill_wise","litre_wise","farmer_code","status"])
+						for k in get_sd_child:
+							if(k.farmer_code== milk.member and k.status==True):
+								bill_wise=k.bill_wise
+								per_wise=k.percentage_wise
+								litre_wise=k.litre_wise
+								break
+						
+					tax_row1 = {
+						"charge_type":"Actual",
+						"account_head":"Deduction Payable - BDF",
+						"category": "Total",
+						"add_deduct_tax": "Deduct",
+						"description": "Actual",
+						"custom_deduction_types": "Bill Wise",
+						"tax_amount": bill_wise
+					}
+
+					pi.append("taxes", tax_row1)
+
+					tax_row2 = {
+						"charge_type": "On Item Quantity",
+						"account_head": "Deduction Payable - BDF",
+						"category": "Total",
+						"add_deduct_tax": "Deduct",
+						"description": "On Item Quantity",
+						"custom_deduction_types": "Litre Wise",
+						"rate": per_wise
+					}
+
+					pi.append("taxes", tax_row2)
+
+					tax_row3 = {
+						"charge_type": "On Net Total",
+						"account_head": "Deduction Payable - BDF",
+						"category": "Total",
+						"add_deduct_tax": "Deduct",
+						"description": "On Net Total",
+						"custom_deduction_types": "Percentage Wise",
+						"rate": litre_wise
+					}
+				
+     
+					pi.append("taxes", tax_row3)
+					pi.allocate_advances_automatically=True
 					pi.save(ignore_permissions = True)
 					pi.submit()
 					if (pi.docstatus == 1):
