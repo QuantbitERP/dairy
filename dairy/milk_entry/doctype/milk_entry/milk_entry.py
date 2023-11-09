@@ -555,8 +555,9 @@ class MilkEntry(Document):
             'snf_clr_per' : self.snf,
             'clr_per' : self.clr,
             'fat_per_' : self.fat,
-            'amount' :self.unit_price_with_incentive*self.volume
+            'amount' :self.unit_price_with_incentive*self.volume,
         })
+        doc.custom_milk_type=self.milk_type
         doc.insert(ignore_permissions=True)
         doc.submit()
         # self.db_set("status" ,"To Sample and Bill")

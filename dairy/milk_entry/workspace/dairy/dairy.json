@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"ooRlmK6d6T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Dairy</span>\",\"col\":12}},{\"id\":\"uOEy_M3rFi\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"ddZ7aotson\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"Qul-wqvcx4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Entry\",\"col\":3}},{\"id\":\"HfYw2S8_Mz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"RMRD\",\"col\":3}},{\"id\":\"-BECXnxwCC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order\",\"col\":3}},{\"id\":\"BbRhnA3LqT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer Demand Order\",\"col\":3}},{\"id\":\"1avz4F_480\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Rate\",\"col\":3}},{\"id\":\"JfCAH1_BTm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Ledger\",\"col\":3}},{\"id\":\"NCa3gn35BY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Entry Vs van Collection\",\"col\":3}},{\"id\":\"LqCuzexFN6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Van Collection\",\"col\":3}},{\"id\":\"Ifd1aIu_BT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Receipts\",\"col\":3}},{\"id\":\"wPYuluFtJL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Payments\",\"col\":3}},{\"id\":\"Jv1xzfBCHg\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Analytics\",\"col\":3}},{\"id\":\"YQQ1G7It22\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"CUMukkTB1h\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Master, Transactions &amp; Reports</b></span>\",\"col\":12}},{\"id\":\"FwKlrd6UBG\",\"type\":\"card\",\"data\":{\"card_name\":\"Milk Marketing Master\",\"col\":4}},{\"id\":\"ktFM-XKkAP\",\"type\":\"card\",\"data\":{\"card_name\":\"Milk Procurement Master\",\"col\":4}},{\"id\":\"MvE738rfne\",\"type\":\"card\",\"data\":{\"card_name\":\"Marketing Transactions\",\"col\":4}},{\"id\":\"INP3szKK_6\",\"type\":\"card\",\"data\":{\"card_name\":\"Procurement Transaction\",\"col\":4}},{\"id\":\"NBMfxfFNw7\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"IAtQ0IyCyC\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"qCg45YD2vI\",\"type\":\"card\",\"data\":{\"card_name\":\"Deduction\",\"col\":4}}]",
+ "content": "[{\"id\":\"ooRlmK6d6T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Dairy</span>\",\"col\":12}},{\"id\":\"uOEy_M3rFi\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"ddZ7aotson\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"Qul-wqvcx4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Entry\",\"col\":3}},{\"id\":\"HfYw2S8_Mz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"RMRD\",\"col\":3}},{\"id\":\"-BECXnxwCC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order\",\"col\":3}},{\"id\":\"BbRhnA3LqT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer Demand Order\",\"col\":3}},{\"id\":\"1avz4F_480\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Rate\",\"col\":3}},{\"id\":\"JfCAH1_BTm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Ledger\",\"col\":3}},{\"id\":\"NCa3gn35BY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Entry Vs van Collection\",\"col\":3}},{\"id\":\"LqCuzexFN6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Van Collection\",\"col\":3}},{\"id\":\"Ifd1aIu_BT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Receipts\",\"col\":3}},{\"id\":\"wPYuluFtJL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Payments\",\"col\":3}},{\"id\":\"Jv1xzfBCHg\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Analytics\",\"col\":3}},{\"id\":\"YQQ1G7It22\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"CUMukkTB1h\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Master, Transactions &amp; Reports</b></span>\",\"col\":12}},{\"id\":\"FwKlrd6UBG\",\"type\":\"card\",\"data\":{\"card_name\":\"Milk Marketing Master\",\"col\":4}},{\"id\":\"ktFM-XKkAP\",\"type\":\"card\",\"data\":{\"card_name\":\"Milk Procurement Master\",\"col\":4}},{\"id\":\"MvE738rfne\",\"type\":\"card\",\"data\":{\"card_name\":\"Marketing Transactions\",\"col\":4}},{\"id\":\"INP3szKK_6\",\"type\":\"card\",\"data\":{\"card_name\":\"Procurement Transaction\",\"col\":4}},{\"id\":\"NBMfxfFNw7\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"IAtQ0IyCyC\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"qCg45YD2vI\",\"type\":\"card\",\"data\":{\"card_name\":\"Deduction\",\"col\":4}},{\"id\":\"6ktyOefcLV\",\"type\":\"card\",\"data\":{\"card_name\":\"Apply Extra Rate\",\"col\":4}}]",
  "creation": "2023-03-28 16:34:25.792077",
  "custom_blocks": [],
  "docstatus": 0,
@@ -444,7 +444,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Deduction",
-   "link_count": 3,
+   "link_count": 4,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -454,6 +454,16 @@
    "label": "Standard Deduction",
    "link_count": 0,
    "link_to": "Standard Deduction",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Standard Deduction Type",
+   "link_count": 0,
+   "link_to": "Standard Deduction Type",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -477,9 +487,27 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Apply Extra Rate",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add Extra Rate",
+   "link_count": 0,
+   "link_to": "Apply Extra Rate",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-11-02 15:42:23.418582",
+ "modified": "2023-11-09 15:22:29.943566",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",
