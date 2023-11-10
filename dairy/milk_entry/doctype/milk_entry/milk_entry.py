@@ -14,12 +14,23 @@ from frappe.utils.data import flt
 # from dairy.milk_entry.custom_purchase_receipt import change_milk_status
 
 class MilkEntry(Document):
+   
     def before_save(self):
-        self.get_pricelist()
-
-
-
-
+        count=0
+        get_farmer=frappe.db.sql("""select custom_fixed_rate,custom_apply_fixed_rate from `tabSupplier`
+                                where name='{0}'
+                                """.format(self.member),as_dict=1)
+    
+        for i in get_farmer:
+            if(i.custom_apply_fixed_rate):
+                if(i.custom_fixed_rate>0):
+                    self.unit_price_with_incentive=i.custom_fixed_rate
+                    self.total=self.unit_price_with_incentive*self.volume
+                    count=1
+    
+        if(count==0):
+            self.get_pricelist()
+            
     @frappe.whitelist()
     def get_pricelist(self):
         pricelist_name = frappe.db.sql("""
@@ -512,6 +523,33 @@ class MilkEntry(Document):
 
     @frappe.whitelist()
     def before_submit(self):
+        count=0
+        get_farmer=frappe.db.sql("""select custom_fixed_rate,custom_apply_fixed_rate from `tabSupplier`
+                                where name='{0}'
+                                """.format(self.member),as_dict=1)
+    
+        for i in get_farmer:
+            if(i.custom_apply_fixed_rate):
+                if(i.custom_fixed_rate>0):    
+                    count=1
+        if(count==0):
+            self.rate_chart_amount=self.total
+            extra_rate=0
+            get_extra_rate= frappe.get_all("child extra rate deduction amt", filters={"parent":self.dcs_id},fields=["farmer_code","cow_item","buffalo_item","mix_item"])  
+            for k in get_extra_rate:
+                if(self.member==k.farmer_code):
+                    if(self.milk_type=="Cow"):
+                        extra_rate=k.cow_item
+                        break
+                    if(self.milk_type=="Buffalo"):
+                        extra_rate=k.buffalo_item
+                        break
+                    if(self.milk_type=="Mix"):
+                        extra_rate=k.mix_item
+                        break
+            self.extra_rate=extra_rate
+            self.extra_rate_amount=extra_rate*self.volume
+            self.total= self.extra_rate_amount+ self.total
         self.create_purchase_receipt()
         
         
@@ -538,7 +576,8 @@ class MilkEntry(Document):
         doc.posting_time = self.time
         doc.company = warehouse.company
         doc.milk_entry = self.name
-
+        if(self.rate_chart_amount>0):
+            self.unit_price_with_incentive=(self.total*self.unit_price_with_incentive)/self.rate_chart_amount
         doc.append('items', {
             'item_code': item_code.item_code,
             'item_name': item_code.item_name,
@@ -547,7 +586,7 @@ class MilkEntry(Document):
             'qty': self.volume,
             'uom': item_code.stock_uom,
             'stock_uom': item_code.stock_uom,
-            'rate': self.unit_price_with_incentive,
+            'rate': round(float(self.unit_price_with_incentive),2),
             'warehouse': self.dcs_id,
             'fat': self.fat_kg,
             'clr': self.snf_kg,

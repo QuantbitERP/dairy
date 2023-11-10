@@ -39,9 +39,12 @@
   "sb4",
   "milk_rate",
   "litre",
+  "extra_rate",
+  "extra_rate_amount",
   "cb5",
   "unit_price",
   "unit_price_with_incentive",
+  "rate_chart_amount",
   "total",
   "lft",
   "rgt",
@@ -387,12 +390,30 @@
    "label": "Rate",
    "options": "Company:company:default_currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "extra_rate",
+   "fieldtype": "Currency",
+   "label": "Extra Rate",
+   "precision": "2"
+  },
+  {
+   "fieldname": "extra_rate_amount",
+   "fieldtype": "Currency",
+   "label": "Extra Rate Amount",
+   "precision": "2"
+  },
+  {
+   "fieldname": "rate_chart_amount",
+   "fieldtype": "Currency",
+   "label": "Rate Chart Amount",
+   "precision": "2"
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-05-02 13:23:04.238185",
+ "modified": "2023-11-09 16:55:11.999137",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",
