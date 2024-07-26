@@ -10,6 +10,8 @@
   "date",
   "shift",
   "company",
+  "from_warehouse",
+  "to_warehouse",
   "column_break_5",
   "transporter",
   "customer",
@@ -46,7 +48,9 @@
   "column_break_35",
   "print_heading",
   "group_same_items",
-  "amended_from"
+  "amended_from",
+  "get_stock_entries",
+  "check"
  ],
  "fields": [
   {
@@ -309,11 +313,35 @@
    "no_copy": 1,
    "options": "No Crate Invoice",
    "read_only": 1
+  },
+  {
+   "fieldname": "get_stock_entries",
+   "fieldtype": "Table",
+   "label": "Get Stock Entries",
+   "options": "Get Stock Entries"
+  },
+  {
+   "default": "0",
+   "fieldname": "check",
+   "fieldtype": "Check",
+   "label": "check"
+  },
+  {
+   "fieldname": "from_warehouse",
+   "fieldtype": "Link",
+   "label": "Source Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "to_warehouse",
+   "fieldtype": "Link",
+   "label": "Target Warehouse",
+   "options": "Warehouse"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-23 13:18:23.064161",
+ "modified": "2024-03-28 12:23:32.033298",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
@@ -347,6 +375,7 @@
    "write": 1
   }
  ],
+ "search_fields": "transporter,customer,transporter_name,shift,route",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

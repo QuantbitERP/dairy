@@ -1,5 +1,51 @@
 // Copyright (c) 2019, Dexciss Technology Pvt Ltd and contributors
 // For license information, please see license.txt
+frappe.ui.form.on("Milk Entry", {
+    click_refresh: function(frm, cdt, cdn) {
+        var d = locals[cdt][cdn];
+        var total = 0;
+        if(d.contracted_qty >= 0 && d.local_transp_dpds_fob >= 0){
+        total = ((d.local_transp_dpds_fob / d.contracted_qty)).toFixed(2);
+        frm.set_value('local_transp_dpds', total);
+        }
+    }
+});
+
+
+frappe.ui.form.on('Milk Entry', {
+	get_quality: function (frm) {
+		frm.call({
+			method: 'get_quality',//function name defined in python
+			doc: frm.doc, //current document
+		});
+	}
+});
+
+frappe.ui.form.on('Milk Entry', {
+	get_weight: function (frm) {
+		frm.call({
+			method: 'get_weight',//function name defined in python
+			doc: frm.doc, //current document
+		});
+	}
+});
+
+frappe.ui.form.on('Milk Entry', {
+    member: function (frm) {
+        frm.call({
+            method: 'get_dcs', // function name defined in Python
+            doc: frm.doc, // current document
+            callback: function(r) {
+                if (r.message) {
+                    frm.set_value('dcs_id', r.message.dcs_id);
+                    refresh_field('dcs_id');
+                }
+            }
+        });
+    }
+});
+
+
 
 frappe.ui.form.on('Milk Entry', {
     onload: function(frm){

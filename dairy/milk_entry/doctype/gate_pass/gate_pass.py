@@ -37,6 +37,7 @@ class GatePass(Document):
 							  {'name': self.name})
 				frappe.db.commit()
 			if i.sales_invoice:
+				
 				frappe.db.sql(""" update `tabSales Invoice` set gate_pass = 0 where name = %(name)s """,{'name': i.sales_invoice})
 				frappe.db.commit()
 				frappe.db.sql(""" update `tabGate Pass` set gate_crate_cal_done = " " where name = %(name)s """,
@@ -720,6 +721,36 @@ def make_sales_order(source_name, target_doc=None, skip_item_mapping=False):
 	}, target_doc)
 
 	return doclist
+
+@frappe.whitelist()
+def make_stock_entry(source_name=None, target_doc=None, skip_item_mapping=False):
+	print('make_stock_entry^^^^^^^^^^^^',source_name, target_doc)
+	doclist = get_mapped_doc("Stock Entry", source_name, {
+		"Stock Entry": {
+			"doctype": "Gate Pass",
+			"validation": {
+				"docstatus": ["=", 1]
+				# "material_request_type": ["=", "Purchase"]
+			}
+		},
+		"Stock Entry Detail": {
+			"doctype": "Gate Pass Item",
+			"field_map": [
+				["stock_qty", 'qty'],
+				["description","description"],
+				["item_code", "item_code"],
+				["stock_uom", "uom"],
+				["sales_invoice_item","name"],
+				["is_free_item", "is_free_item"],
+				["weight_per_unit","weight_per_unit"],
+				["total_weight","total_weight"],
+			]
+		}
+	}, target_doc)
+
+	return doclist
+
+
 
 @frappe.whitelist()
 def calculate_crate(doc_name = None):

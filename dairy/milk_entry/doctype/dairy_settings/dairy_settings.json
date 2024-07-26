@@ -89,6 +89,11 @@
   "order_controller",
   "get_territory",
   "section_break_77",
+  "invoice_morning",
+  "invoice_controller",
+  "column_break_68fll",
+  "invoice_evening_shift",
+  "section_break_lu4nq",
   "auto_print_milk_receipt",
   "quality_inspection_required_for_van_collection",
   "column_break_82",
@@ -500,7 +505,8 @@
   },
   {
    "fieldname": "section_break_77",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Invoice Locking Time"
   },
   {
    "default": "0",
@@ -726,12 +732,36 @@
   {
    "fieldname": "column_break_wbmp7",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_lu4nq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "invoice_controller",
+   "fieldtype": "Link",
+   "label": "Invoice Controller",
+   "options": "Role"
+  },
+  {
+   "fieldname": "column_break_68fll",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "invoice_evening_shift",
+   "fieldtype": "Time",
+   "label": "Invoice Locking Time for Evening Shift"
+  },
+  {
+   "fieldname": "invoice_morning",
+   "fieldtype": "Time",
+   "label": "Invoice Locking Time for Morning Shift"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-11-04 10:51:03.137614",
+ "modified": "2024-05-21 14:09:57.597141",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

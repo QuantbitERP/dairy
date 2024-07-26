@@ -10,7 +10,7 @@ def execute(filters=None):
 	return columns, data
 
 def get_columns():
-	return[
+	return[ 
 		{
 			"filedname":"employee",
 			"label":_("Employee"),
@@ -90,7 +90,7 @@ def get_data(filters):
 			ss.docstatus = 1 AND
 			ss.end_date <= '{to_date}'
 			{ts_query}
-		GROUP BY
+		GROUP BY 
 			employee
 	""".format(ts_query=ts_query, from_date=filters.get("from_date"), to_date=filters.get("to_date")),
 	as_dict=True)
@@ -161,7 +161,7 @@ def get_data(filters):
 def get_query(filters, additional_query=None):
 	if not filters.get("from_daye") and not filters.get("to_date"):
 		frappe.throw("From Date and To Date are mandatory")
-	query = ""
+	query = "" 
 	if additional_query:
 		query += additional_query
 	if filters.get("employee_id"):

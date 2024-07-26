@@ -240,3 +240,136 @@ class RMRDLines(Document):
 			print('Printtttttttttttttttttt',cost_center,clr)
 			se_child.cost_center = cost_center
 			se_child.expense_account = expense_account if perpetual_inventory else None
+
+
+
+
+
+	@frappe.whitelist()
+	def creatr_stockrmrd(self):
+		rmrd = frappe.get_doc("RMRD", self.rmrd)
+		print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',rmrd.date)
+		# if rmrd.t_g_cow_wt > 0 or rmrd.t_g_buf_wt > 0 or rmrd.t_g_mix_wt > 0:
+		stock_entry = frappe.new_doc("Stock Entry")
+		stock_entry.purpose = "Material Transfer"
+		stock_entry.stock_entry_type = "Material Transfer"
+		stock_entry.set_posting_time = 1
+		stock_entry.posting_date = self.date
+		stock_entry.rmrd = rmrd.name
+		stock_entry.rmrd_lines = self.name
+		# stock_entry.set_posting_time = 0
+		stock_entry.docstatus = 1
+		stock_entry.status = "Submited"
+
+		stock_entry.company = rmrd.company
+		stock_entry.rmrd = rmrd.name
+
+		route = frappe.get_doc("Route Master", rmrd.route)
+
+		cost_center = frappe.get_cached_value('Company', self.company, 'cost_center')
+		print('cost center make stock entry****************',cost_center)
+		perpetual_inventory = frappe.get_cached_value('Company', self.company, 'enable_perpetual_inventory')
+		expense_account = frappe.get_cached_value('Company', self.company, 'stock_adjustment_account')
+
+		g_cow_item = frappe.db.get_single_value("Dairy Settings", "cow_pro")
+		g_buf_item = frappe.db.get_single_value("Dairy Settings", "buf_pro")
+		g_mix_item = frappe.db.get_single_value("Dairy Settings", "mix_pro")
+
+		s_cow_item = frappe.db.get_single_value("Dairy Settings", "s_cow_milk")
+		s_buf_item = frappe.db.get_single_value("Dairy Settings", "s_buf_milk")
+		s_mix_item = frappe.db.get_single_value("Dairy Settings", "s_mix_milk")
+
+		c_cow_item = frappe.db.get_single_value("Dairy Settings", "c_cow_milk")
+		c_buf_item = frappe.db.get_single_value("Dairy Settings", "c_buf_milk")
+		c_mix_item = frappe.db.get_single_value("Dairy Settings", "c_buf_milk")
+
+
+		doc = frappe.get_all("Van Collection Items", ['name'])
+
+
+		if self.g_cow_milk > 0:
+			self.set_value_depend_milk_type(g_cow_item, stock_entry, self.rmrd_good_cow_milk, self.cow_milk_fat,
+											self.cow_milk_snf,self.cow_milk_clr , route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+		if self.g_buf_milk > 0:
+			self.set_value_depend_milk_type(g_buf_item, stock_entry, self.rmrd_good_buf_milk, self.buf_milk_fat,
+											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+		if self.g_mix_milk > 0:
+			self.set_value_depend_milk_type(g_mix_item, stock_entry, self.rmrd_good_mix_milk, self.mix_milk_fat,
+											self.mix_milk_snf, self.mix_milk_clr,route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+
+		if self.g_cow_milk > 0:
+			self.set_value_depend_milk_type(s_cow_item, stock_entry, self.s_cow_milk, self.cow_milk_fat,
+											self.cow_milk_snf,self.cow_milk_clr , route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+		if self.g_buf_milk > 0:
+			self.set_value_depend_milk_type(s_buf_item, stock_entry,self.s_buf_milk,self.buf_milk_fat,
+											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+		if self.g_mix_milk > 0:
+			self.set_value_depend_milk_type(s_mix_item, stock_entry, self.s_mix_milk, self.mix_milk_fat,
+											self.mix_milk_snf, self.mix_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+		if self.g_cow_milk > 0:
+			self.set_value_depend_milk_type(c_cow_item, stock_entry, self.c_cow_milk, self.cow_milk_fat,
+											self.cow_milk_snf,self.cow_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+		if self.g_buf_milk > 0:
+			self.set_value_depend_milk_type(c_buf_item, stock_entry, self.c_buf_milk, self.buf_milk_fat,
+											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+		if self.g_mix_milk > 0:
+			self.set_value_depend_milk_type(c_mix_item, stock_entry, self.c_mix_milk, self.mix_milk_fat,
+											self.mix_milk_snf, self.mix_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
+
+
+		print('clr make stock entry*********************',rmrd.t_cow_m_clr,rmrd.t_buf_m_clr,rmrd.t_mix_m_clr)
+		print('stock entry^^^^^^^^^^^^^^^^^^^^^^^',stock_entry.name)
+		# stock_entry.insert()
+		# stock_entry.db_update()
+		
+		# if not rmrd.inspection_required:
+		# 	stock_entry.submit()
+		self.db_set('stock_entry',stock_entry.name)
+
+		# result = frappe.db.sql("""select sed.* from `tabStock Entry` as se 
+		# 						join `tabStock Entry Detail` as sed on sed.parent = se.name
+		# 						where se.rmrd = '{0}' and posting_date = '{1}'""".format(self.rmrd,self.date), as_dict=True)
+
+		# print('result make stock entry************************',result)
+		stock_entry.save()
+		return stock_entry
+
+
+	def set_value_depend_milk_type(self, item_name, stock_entry, milk_collected, fat, clr,snf, route, source_warehouse,cost_center, expense_account, dcs,perpetual_inventory=None):
+		# doc = frappe.get_all("Van Collection Items",{'dcs':1} ,['dcs'])
+		item = frappe.get_doc("Item", item_name)
+		if milk_collected > 0:
+			rmrd = frappe.get_doc("RMRD", self.rmrd)
+			item = frappe.get_doc("Item", item_name)
+			print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',cost_center,clr)
+			se_child = stock_entry.append('items')
+			se_child.item_code = item.item_code
+			se_child.item_name = item.item_name
+			se_child.uom = item.stock_uom
+			se_child.stock_uom = item.stock_uom
+			se_child.qty = milk_collected
+			# se_child.fat = (milk_collected * item.weight_per_unit) * (fat/100)
+			# se_child.clr = (milk_collected * item.weight_per_unit) * (clr/100)
+			se_child.fat = (milk_collected * item.weight_per_unit) * (fat/100)
+			se_child.fat_per = fat
+			se_child.snf_clr = (milk_collected * item.weight_per_unit) * (snf/100)
+			se_child.snf_clr_per = snf
+			se_child.snf = (milk_collected * item.weight_per_unit) * (clr/100)
+			se_child.snf_per = clr
+			if stock_entry.purpose == "Material Transfer":
+				se_child.s_warehouse = route.source_warehouse
+			se_child.t_warehouse = rmrd.target_warehouse
+			se_child.basic_rate = item.valuation_rate
+			# in stock uom
+			se_child.transfer_qty = milk_collected
+			print('Printtttttttttttttttttt',cost_center,clr)
+			se_child.cost_center = cost_center
+			se_child.expense_account = expense_account if perpetual_inventory else None
