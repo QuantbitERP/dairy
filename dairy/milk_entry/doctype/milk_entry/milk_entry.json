@@ -8,10 +8,13 @@
  "field_order": [
   "naming_series",
   "dcs_id",
+  "column_break_cytfx",
+  "station",
   "shift",
   "sb1",
   "date",
   "time",
+  "column_break_n1z3g",
   "sb2",
   "member",
   "milk_type",
@@ -19,6 +22,8 @@
   "sample",
   "volume",
   "stock_uom",
+  "get_quality",
+  "get_weight",
   "section_break_7",
   "fat",
   "fat_kg",
@@ -408,12 +413,38 @@
    "fieldtype": "Currency",
    "label": "Rate Chart Amount",
    "precision": "2"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "get_quality",
+   "fieldtype": "Button",
+   "label": "Get Quality"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "get_weight",
+   "fieldtype": "Button",
+   "label": "Get Weight"
+  },
+  {
+   "fieldname": "station",
+   "fieldtype": "Select",
+   "label": "Station",
+   "options": "Station1\nStation2\nStation3\nStation4\nStation5\nStation6\nStation7\nStation8\nStation9\nStation10\nStation11\nStation12\nStation13\nStation14\nStation15\nStation16\nStation17\nStation18\nStation19\nStation20"
+  },
+  {
+   "fieldname": "column_break_cytfx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_n1z3g",
+   "fieldtype": "Column Break"
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-11-09 16:55:11.999137",
+ "modified": "2024-07-01 11:01:51.940597",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",
@@ -455,5 +486,7 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1,
+ "track_views": 1
 }

@@ -500,8 +500,9 @@
    "options": "\nMorning\nEvening"
   }
  ],
+ "is_submittable": 1,
  "links": [],
- "modified": "2023-04-10 15:00:03.623314",
+ "modified": "2023-11-27 17:54:59.410398",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",

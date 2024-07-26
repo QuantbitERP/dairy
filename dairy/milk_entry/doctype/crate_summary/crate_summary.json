@@ -10,7 +10,8 @@
   "crate_opening",
   "crate_issue",
   "crate_return",
-  "crate_balance"
+  "crate_balance",
+  "check"
  ],
  "fields": [
   {
@@ -56,11 +57,18 @@
    "label": "Voucher",
    "options": "voucher_type",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "check",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Check"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2023-03-25 18:37:59.587233",
+ "modified": "2024-03-30 14:49:27.447957",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Summary",

@@ -1,5 +1,14 @@
 // Copyright (c) 2020, Dexciss Technology Pvt Ltd and contributors
 // For license information, please see license.txt
+frappe.ui.form.on('RMRD Lines', {
+	on_submit: function (frm) {
+		frm.call({
+			method:'creatr_stockrmrd',//function name defined in python
+			doc: frm.doc, //current document
+		});
+	}
+});
+
 
 frappe.ui.form.on('RMRD Lines', {
 
@@ -114,24 +123,24 @@ frappe.ui.form.on('RMRD Lines', {
 	 },
 	 
 
-	 refresh: function(frm) {
+	//  refresh: function(frm) {
 		
-		console.log('Stock entry',frm.doc.stock_entry)
-		if(!frm.doc.__islocal && !frm.doc.stock_entry)
-		       {
-		           frm.add_custom_button(__('Make Stock Entry'),function() {
-		               return frappe.call({
-		                   doc: frm.doc,
-		                   method: 'make_stock_entry',
-		                   callback: function(r) {
-		                       var doc = frappe.model.sync(r.message);
-		                       frappe.set_route("Form", doc[0].doctype, doc[0].name);
-		                   }
-		               });
-		           }).addClass('btn-primary');
-		       }
+	// 	console.log('Stock entry',frm.doc.stock_entry)
+	// 	if(!frm.doc.__islocal && !frm.doc.stock_entry)
+	// 	       {
+	// 	           frm.add_custom_button(__('Make Stock Entry'),function() {
+	// 	               return frappe.call({
+	// 	                   doc: frm.doc,
+	// 	                   method: 'make_stock_entry',
+	// 	                   callback: function(r) {
+	// 	                       var doc = frappe.model.sync(r.message);
+	// 	                       frappe.set_route("Form", doc[0].doctype, doc[0].name);
+	// 	                   }
+	// 	               });
+	// 	           }).addClass('btn-primary');
+	// 	       }
 			
-	},
+	// },
 	onload:function(frm){
         frm.set_query('rmrd', function(doc) {
             return {

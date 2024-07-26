@@ -108,8 +108,7 @@ class BulkPayment(Document):
 				writer.writerow(row)					
 
     
-
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_download(name):
 	doc=frappe.get_doc("Dairy Settings")
 	with open(str(doc.file_path_download_csv)+str(name)+".csv",'rb') as f:

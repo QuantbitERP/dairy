@@ -1,5 +1,15 @@
 // Copyright (c) 2020, Dexciss Technology Pvt Ltd and contributors
 // For license information, please see license.txt
+frappe.ui.form.on('Van Collection Items', {
+	on_submit: function (frm) {
+		frm.call({
+			method:'creatr_stock',//function name defined in python
+			doc: frm.doc, //current document
+		});
+	}
+});
+
+
 
 frappe.ui.form.on('Van Collection Items', {
 	 after_save: function(frm) {
@@ -54,16 +64,16 @@ frappe.ui.form.on('Van Collection Items', {
                 })
             }, __("Get items from"));
 
-            frm.add_custom_button(__('Make Gate pass'),function() {
-                return frappe.call({
-                    doc: frm.doc,
-                    method: 'make_stock_entry',
-                    callback: function(r) {
-                        var doc = frappe.model.sync(r.message);
-                        frappe.set_route("Form", doc[0].doctype, doc[0].name);
-                    }
-                });
-            }).addClass('btn-primary');
+            // frm.add_custom_button(__('Make Gate pass'),function() {
+            //     return frappe.call({
+            //         doc: frm.doc,
+            //         method: 'make_stock_entry',
+            //         callback: function(r) {
+            //             var doc = frappe.model.sync(r.message);
+            //             frappe.set_route("Form", doc[0].doctype, doc[0].name);
+            //         }
+            //     });
+            // }).addClass('btn-primary');
         }
      },
      onload:function(frm){

@@ -16,6 +16,7 @@
   "dcs",
   "to_shift",
   "to_date",
+  "inspection_required",
   "company",
   "sb2",
   "cow_milk_collected",
@@ -59,7 +60,8 @@
   "section_break_40",
   "gate_pass",
   "sb6",
-  "time"
+  "time",
+  "amended_from"
  ],
  "fields": [
   {
@@ -95,8 +97,7 @@
    "fieldname": "buf_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Buffalo Milk Entry",
-   "read_only": 1
+   "label": "Buffalo Milk Entry"
   },
   {
    "allow_in_quick_entry": 1,
@@ -104,8 +105,7 @@
    "fieldname": "mix_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Mix Milk Entry",
-   "read_only": 1
+   "label": "Mix Milk Entry"
   },
   {
    "allow_in_quick_entry": 1,
@@ -421,10 +421,27 @@
    "fieldtype": "Date",
    "label": "To Date",
    "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Van Collection Items",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "inspection_required",
+   "fieldtype": "Check",
+   "label": "Inspection Required",
+   "options": "0"
   }
  ],
+ "is_submittable": 1,
  "links": [],
- "modified": "2023-05-09 15:04:29.362839",
+ "modified": "2023-11-23 17:04:50.650174",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
