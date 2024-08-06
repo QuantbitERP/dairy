@@ -11,25 +11,15 @@ from frappe.utils import (flt, getdate, get_url, now,
                           nowtime, get_time, today, get_datetime, add_days, datetime)
 
 class DairySettings(Document):
-	# @frappe.whitelist()
-	# def custom_po(self):
-	# 	frappe.enqueue(
-	# 		method="dairy.milk_entry.doctype.dairy_settings.dairy_settings.custom_payment",
-	# 		queue="long",
-	# 		timeout=40000
-	# 	)
 	@frappe.whitelist()
 	def custom_po(self):
 		p_inv = frappe.get_doc('Dairy Settings')
 		if p_inv.custom_date:
 			if p_inv.default_payment_type =='Daily':
-				print('0000000000000000000000000000000000000000000000')
 				purchase = frappe.db.sql("""select distinct(supplier) as name 
 													from `tabPurchase Receipt` 
 													where docstatus =1 and posting_date ='{0}'
 													""".format(date.today()), as_dict =True)
-							
-				print('purchase********************************************',purchase)
 				for i in purchase:
 					milk_entry_li=[]
 					pi=frappe.new_doc("Purchase Invoice")			
@@ -37,25 +27,15 @@ class DairySettings(Document):
 													from `tabPurchase Receipt` 
 													where supplier = '{0}' and posting_date = '{1}' and docstatus = 1
 													""".format(i.name,date.today()), as_dict =True)
-					
-					print('meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',me)
 					for m in me:
 						milk = frappe.get_doc('Milk Entry',m.milk_entry)
 						milk_entry_li.append(str(m.milk_entry))
-						print('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',m.milk_entry)
 						ware = frappe.get_doc('Warehouse',{'name':milk.dcs_id})
-						print('ware^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',ware)
-						
-						
-
 						pr =  frappe.db.get_value('Purchase Receipt',{'milk_entry':milk.name,"docstatus":1},['name'])
-
-						# for j in pr:
 						if pr:
 							pri =  frappe.get_doc('Purchase Receipt',pr)
 							pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':pr},["parent"])
 							if not pur_inv:
-								# pi = frappe.new_doc("Purchase Invoice")
 								for itm in pri.items:
 									pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
 									pi.milk_entry = milk.name
@@ -101,7 +81,6 @@ class DairySettings(Document):
 					if(doc_list):
 						get_sd_child = frappe.get_all("child Stand Deduction List", filters={"parent": doc_list[0]['name']},fields=["percentage_wise","bill_wise","litre_wise",
 						"cow_item","buffalo_item","mix_item","buffalo_liter_wise","buffalo_percentage_wise","buffalo_bill_wise","mix_liter_wise","mix_percentage_wise","mix_bill_wise","farmer_code","status"])
-						# get_sd_child = frappe.get_all("child Stand Deduction List", filters={"parent": doc_list[0]['name']},fields=["percentage_wise","bill_wise","litre_wise","farmer_code","status"])
 						for k in get_sd_child:
 							if(k.farmer_code== milk.member and k.status==True and milk_item==k.cow_item):
 								bill_wise=k.bill_wise
@@ -141,9 +120,7 @@ class DairySettings(Document):
 						"custom_deduction_types": "Litre Wise",
 						"rate": per_wise
 					}
-
 					pi.append("taxes", tax_row2)
-
 					tax_row3 = {
 						"charge_type": "On Net Total",
 						"account_head": get_dairy_setting.bill_wise_ded_account,
@@ -153,7 +130,6 @@ class DairySettings(Document):
 						"custom_deduction_types": "Percentage Wise",
 						"rate": litre_wise
 					}
-				
 		
 					pi.append("taxes", tax_row3)
 
@@ -234,6 +210,8 @@ class DairySettings(Document):
 							item_code = frappe.db.get_single_value("Dairy Settings", "buf_pro")
 						elif milk_type == 'Mix':
 							item_code = frappe.db.get_single_value("Dairy Settings", "mix_pro")
+						else:
+							frappe.throw("Check Milk Type is set at Purchase Reciept")
 
 						item = frappe.get_doc('Item', item_code)
 						milk_item=item.name
