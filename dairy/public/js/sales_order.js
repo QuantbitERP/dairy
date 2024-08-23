@@ -216,7 +216,6 @@ frappe.ui.form.on("Sales Order Item", {
                    if(r.message)
                    {
                     var array = r.message
-                    console.log("*****************array",array);
                     if (array != 1){
                     row.uom = array["uom"];
                     row.conversion_factor = array["conversion_factor"];
