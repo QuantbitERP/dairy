@@ -11,6 +11,7 @@ from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 
 def before_submit(sales, method):
+    validate_multiple_orders(sales.customer,sales.delivery_shift,sales.route,sales.delivery_date)
     for k in sales.items:
         price_list=frappe.db.get_value("Item Price",{"item_code":k.item_code,"price_list":sales.selling_price_list},["price_list_rate"])
         if price_list:
@@ -57,6 +58,8 @@ def before_submit(sales, method):
 
                     })
                     sales.validate()
+                    
+                   
 
                 if item.leakage_applicable and applicable_on == "Order UOM" and line.qty > leakage_qty:
                     qty = (line.qty * leakage_perc)/100
@@ -95,7 +98,10 @@ def validate_multiple_orders(customer,delivery_shift,route,delivery_date):
          {'customer': customer, 'delivery_shift': delivery_shift, 'route':route,'delivery_date':delivery_date})
         result = pre_sale_order[0][0]
         if (result > 0):
+            frappe.throw("Multiple Orders In Single Shift Not Allowed")
             return 1
+            
+
 
 
 @frappe.whitelist()

@@ -134,25 +134,26 @@ frappe.ui.form.on("Sales Order", {
             }
         });
     },
-    before_submit:function(frm){
-        // validate if restrict_multiple_orders_in_single_shift in dairy setting is check
-	    frm.call({
-				method:"dairy.milk_entry.custom_sales_order.validate_multiple_orders",
-//				doc: frm.doc,
-				args: {
-					customer: frm.doc.customer,
-					delivery_shift: frm.doc.delivery_shift,
-					route: frm.doc.route,
-					delivery_date: frm.doc.delivery_date
-				},
-				callback: function(r) {
-					if(r.message == 1){
-                        frappe.validated=false;
-                         frappe.msgprint("Multiple Orders In Single Shift Not Allowed");
-					}
-				}
-			});
-    },
+//     before_submit:function(frm){
+//         // validate if restrict_multiple_orders_in_single_shift in dairy setting is check
+// 	    frm.call({
+// 				method:"dairy.milk_entry.custom_sales_order.validate_multiple_orders",
+// //				doc: frm.doc,
+// 				args: {
+// 					customer: frm.doc.customer,
+// 					delivery_shift: frm.doc.delivery_shift,
+// 					route: frm.doc.route,
+// 					delivery_date: frm.doc.delivery_date
+// 				},
+// 				callback: function(r) {
+// 					if(r.message == 1){
+//                         frappe.validated=false;
+//                         console.log("hello")
+//                          frappe.throw("Multiple Orders In Single Shift Not Allowed");
+// 					}
+// 				}
+// 			});
+//     },
     delivery_shift: function(frm){
         if (frm.doc.delivery_shift == 'Morning')
         {
