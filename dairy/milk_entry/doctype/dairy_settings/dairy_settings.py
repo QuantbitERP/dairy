@@ -286,19 +286,24 @@ class DairySettings(Document):
 
 						if variable_deduction and variable_deduction[0]['SUM(deduction_amount)']:
 							jounral_entry_falg = True
-       
-							jounral_entry.append("accounts",{
-							"account": p_inv.variable_deduction_debit_account,
-							"party_type": "Supplier",
-							"party": i.name,
-							"debit_in_account_currency": round(variable_deduction[0]['SUM(deduction_amount)']),
-							"reference_type": "Purchase Invoice",
-							"reference_name": pi.name
-							})
-       
-							jounral_entry.append("accounts",{
-							"account": p_inv.variable_deduction_credit_account,
-							"credit_in_account_currency": round(variable_deduction[0]['SUM(deduction_amount)'])})
+							if p_inv.variable_deduction_debit_account:
+								jounral_entry.append("accounts",{
+								"account": p_inv.variable_deduction_debit_account,
+								"party_type": "Supplier",
+								"party": i.name,
+								"debit_in_account_currency": round(variable_deduction[0]['SUM(deduction_amount)']),
+								"reference_type": "Purchase Invoice",
+								"reference_name": pi.name
+								})
+							else:
+								frappe.throw("Set the Debit Account On Dairy Seeting For Variable Deduction")
+        
+							if p_inv.variable_deduction_credit_account:
+								jounral_entry.append("accounts",{
+								"account": p_inv.variable_deduction_credit_account,
+								"credit_in_account_currency": round(variable_deduction[0]['SUM(deduction_amount)'])})
+							else:
+								frappe.throw("Set the Debit Account On Dairy Seeting For Variable Deduction")
 
 						for variable_deduction_name in variable_deduction_names:
 							var_doc = frappe.get_doc("Variable Deduction",variable_deduction_name['name'])
