@@ -127,7 +127,11 @@
   "column_break_hnekh",
   "liter_wise_ded_account",
   "column_break_wbmp7",
-  "percentage_wise_ded_account"
+  "percentage_wise_ded_account",
+  "variable_deduction_section",
+  "variable_deduction_debit_account",
+  "column_break_mdeo2",
+  "variable_deduction_credit_account"
  ],
  "fields": [
   {
@@ -705,7 +709,7 @@
   {
    "fieldname": "standard_and_variable_deduction_section",
    "fieldtype": "Section Break",
-   "label": "Standard and Variable Deduction"
+   "label": "Standard Deduction"
   },
   {
    "fieldname": "bill_wise_ded_account",
@@ -756,12 +760,33 @@
    "fieldname": "invoice_morning",
    "fieldtype": "Time",
    "label": "Invoice Locking Time for Morning Shift"
+  },
+  {
+   "fieldname": "variable_deduction_section",
+   "fieldtype": "Section Break",
+   "label": "Variable Deduction"
+  },
+  {
+   "fieldname": "variable_deduction_debit_account",
+   "fieldtype": "Link",
+   "label": "Variable Deduction Dedit Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "column_break_mdeo2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "variable_deduction_credit_account",
+   "fieldtype": "Link",
+   "label": "Variable Deduction Credit Account",
+   "options": "Account"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-05-21 14:09:57.597141",
+ "modified": "2024-09-11 13:31:48.180322",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
