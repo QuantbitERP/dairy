@@ -109,14 +109,14 @@ def get_jinja_data_si_item(del_note,gate_pass):
 								`tabSales Invoice` si On si.name=s.parent
 								where s.parent = %(name)s and s.item_code = %(item_code)s and is_free_item = 0""",
 							{'name':del_note,'item_code':obj.item_code}, as_dict=True)
-		
+		frappe.msgprint(str(res2))
 
 		for i in res2:
 			if not i.crate_issue:
 				item=frappe.get_doc("Item",i.item_code)
 				for k in item.crate:
-					if k.warehouse==i.warehouse:
-						if (i.stock_qty/k.crate_quantity) >1:
+					if k.warehouse==i.x:
+						if (i.stock_qty/k.crate_quantity) > 0:
 							i.update({"crate_issue":int(i.stock_qty/k.crate_quantity),
 				                   "crate_type":k.crate_type})
 			free_qty_list = frappe.db.sql(""" select 
