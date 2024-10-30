@@ -6,8 +6,6 @@ from frappe.model.document import Document
 import csv
 import io
 import random
-
-import frappe
 import json
 
 from frappe.utils.data import format_date

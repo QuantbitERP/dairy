@@ -9,6 +9,7 @@ from datetime import date
 from datetime import timedelta,datetime
 from frappe.utils import (flt, getdate, get_url, now,
                           nowtime, get_time, today, get_datetime, add_days, datetime)
+
 class DairySettings(Document):
 	@frappe.whitelist()
 	def custom_po(self):
